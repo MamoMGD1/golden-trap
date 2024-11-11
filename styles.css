@@ -1,0 +1,160 @@
+/* Reset and Styling Defaults */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Background Styling */
+body {
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #ffffff;
+}
+
+/* Game Container */
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80vw;
+    max-width: 350px;
+    padding: 15px;
+    background: #2c2c2c;
+    border: 1px solid #ffd700;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Game Box */
+.game-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+/* Input Field */
+.number-box {
+    width: 100%;
+    max-width: 200px;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #4a4a4a;
+    text-align: center;
+    background: #1e1e1e;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+/* Remove Up/Down Arrows in Input */
+.number-box::-webkit-outer-spin-button,
+.number-box::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.number-box[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Buttons Styling */
+button {
+    background: #ffd700;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    width: 100%;
+    max-width: 200px;
+}
+
+button:hover {
+    background: #bda001; /* Darker shade of gold */
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Result and Error Boxes */
+#my-number, #result-box, #error {
+    font-size: 1rem;
+    padding: 0.6rem;
+    text-align: center;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 200px;
+    background: #333333;
+    color: #ffffff;
+    border: 1px solid #4a4a4a;
+    margin: 0.4rem 0;
+}
+label{
+    margin-bottom: -15px;
+}
+/* Error Text */
+#error {
+    color: #ff3700; /* Slightly darker shade of yellow */
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+}
+
+/* Welcome Screen Overlay */
+#wlcm-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    color: #ffd700;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Welcome Screen Buttons */
+#wlcm-screen button {
+    margin-top: 0.8rem;
+    background: #b89d00;
+    border-radius: 8px;
+    padding: 0.6rem;
+    font-size: 1rem;
+    color: #1a1a1a;
+    transition: background 0.2s ease;
+    width: 80%;
+    max-width: 160px;
+}
+
+#wlcm-screen button:hover {
+    background: #ffd900; /* Darker shade of gold */
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 450px) {
+    .game-container {
+        padding: 12px;
+        width: 95vw;
+        max-width: 95vw;
+    }
+
+    .number-box, button, #my-number, #result-box, #error {
+        max-width: 85%;
+    }
+}

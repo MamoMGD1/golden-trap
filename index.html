@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="icon" href="icon.png">
+        <title>Golden Trap</title>
+    </head>
+    <body>
+        <div class="game-container">
+            <div class="game-box">
+                <input type="number" class="number-box" id="number-input" placeholder="Enter your number here">
+                <button onclick="continueFunc()" class="button">Send</button>
+                <label for="my-number">My Number</label>
+                <div class="number-box" id="my-number">0</div>
+                <label for="result-box" style="color: #ffd700;">Total</label>
+                <div id="result-box" class="number-box" style="color: #ffd700;">0</div>
+                <div id="error"></div>
+                <button onclick="restartGame()" class="button">Restart</button>    
+            </div>
+        </div>
+    </body>
+    <script>
+        const input = document.getElementById("number-input");
+        const myNumber = document.getElementById("my-number");
+        const result = document.getElementById("result-box");
+        const error = document.getElementById("error");
+        let randNum1 = 0, pcChoice = 0, roundNum = 0;
+        let lost = false, inDanger = true;
+        const hotNums = [12,23,34,45,56,67,78,89,101];
+        const wlcmScreen = document.createElement("div");
+        wlcmScreen.innerHTML=`
+            <div id="wlcm-screen">
+                Who Will Start The Game?
+                <button onClick = "startGame('me')" style="margin-top: 20px">Me</button>
+                <button onClick = "startGame('computer')">Computer</button>
+            </div>
+        `;
+        document.querySelector(".game-container").appendChild(wlcmScreen);
+        function welcome(){
+            randNum1 = Math.floor(Math.random()*3)+3;
+            console.log(randNum1)
+            document.querySelector(".game-box").style.visibility = "hidden";
+            document.getElementById("wlcm-screen").style.visibility = "visible";
+        } 
+        document.addEventListener("DOMContentLoaded", welcome());
+        input.addEventListener("keydown", function(event){
+            if(event.key === "Enter")
+                continueFunc();
+        });
+        function startGame(starter){
+            if(starter === "computer"){
+                myNumber.textContent = myNumberFunc();
+                result.textContent = parseInt(myNumber.textContent);
+            }
+            document.getElementById("wlcm-screen").style.visibility = "hidden";
+            document.querySelector(".game-box").style.visibility = "visible";
+            input.focus();
+        }
+        function myNumberFunc(){
+            let resultValue = parseInt(result.textContent)+parseInt(input.value);
+            if(randNum1 === roundNum){
+                let nearest = hotNums[1];
+                let difference = Math.abs(resultValue - hotNums[0]);
+                for(let i = 1; i < hotNums.length; i++){
+                    if(difference > Math.abs(hotNums[i]-resultValue)){
+                        nearest = hotNums[i];
+                        if(nearest<=resultValue)
+                            nearest = hotNums[i+1];
+                    }
+                    difference = Math.abs(hotNums[i]-resultValue);
+                }
+                pcChoice = nearest-resultValue;
+                if(pcChoice >= 11){
+                    pcChoice = 1;
+                }
+            }else if(roundNum > randNum1){
+                if(resultValue >= 90 && inDanger){
+                    console.log("roundNum > if")
+                    pcChoice = 10-parseInt(input.value);
+                    if(pcChoice === 0)
+                        lost = true;
+                }else{
+                    pcChoice = 11-parseInt(input.value);
+                    let newTotal = parseInt(result.textContent) + pcChoice;
+                    if((hotNums.includes(newTotal-2) || hotNums.includes(newTotal-pcChoice-1)) && (input.value !== '10')){
+                        pcChoice--;
+                    }
+                    if(pcChoice === 0)
+                        pcChoice = 1;
+                }
+            }else{
+                pcChoice = Math.floor(Math.random()*9)+1;
+            }
+            return pcChoice;
+        }
+        function continueFunc(){
+            roundNum++;
+            if(input.value > 10 || input.value < 1){
+                error.textContent = "Invalid Input!";
+                error.style.visibility = "visible";
+            }else{
+                error.style.visibility = "hidden";
+                myNumber.textContent = myNumberFunc();
+                result.textContent = parseInt(result.textContent) + parseInt(myNumber.textContent) + parseInt(input.value);
+            }
+            if(result.textContent == 89)
+                inDanger = false;
+            input.focus();
+            input.select();
+            if(result.textContent >= 100){
+                error.textContent = lost ? "Seems Like You Caught Me This Time" : "You Lost The Game!";
+                error.style.visibility = "visible";
+                input.disabled = true;
+            }
+        }
+        function restartGame(){
+            window.location.reload();
+        }
+    </script>
+</html>
