@@ -38,8 +38,8 @@
         `;
         document.querySelector(".game-container").appendChild(wlcmScreen);
         function welcome(){
-            randNum1 = Math.floor(Math.random()*3)+3;
-            console.log(randNum1)
+            randNum1 = Math.floor(Math.random()*4)+2;
+            console.log(`The Trap Is ${randNum1}`)
             document.querySelector(".game-box").style.visibility = "hidden";
             document.getElementById("wlcm-screen").style.visibility = "visible";
         } 
@@ -59,7 +59,20 @@
         }
         function myNumberFunc(){
             let resultValue = parseInt(result.textContent)+parseInt(input.value);
-            if(randNum1 === roundNum){
+            if(roundNum > randNum1 || (resultValue >= 90 && inDanger)){
+                if(resultValue >= 90 && inDanger){
+                    pcChoice = 10-parseInt(input.value);
+                    if(pcChoice === 0)
+                        lost = true;
+                }else{
+                    pcChoice = 11-parseInt(input.value);
+                }
+            }
+            else if(randNum1 === roundNum){
+                if(hotNums.includes(resultValue)){
+                    roundNum--;
+                    return 1;
+                }
                 let nearest = hotNums[1];
                 let difference = Math.abs(resultValue - hotNums[0]);
                 for(let i = 1; i < hotNums.length; i++){
@@ -74,22 +87,8 @@
                 if(pcChoice >= 11){
                     pcChoice = 1;
                 }
-            }else if(roundNum > randNum1){
-                if(resultValue >= 90 && inDanger){
-                    console.log("roundNum > if")
-                    pcChoice = 10-parseInt(input.value);
-                    if(pcChoice === 0)
-                        lost = true;
-                }else{
-                    pcChoice = 11-parseInt(input.value);
-                    let newTotal = parseInt(result.textContent) + pcChoice;
-                    if((hotNums.includes(newTotal-2) || hotNums.includes(newTotal-pcChoice-1)) && (input.value !== '10')){
-                        pcChoice--;
-                    }
-                    if(pcChoice === 0)
-                        pcChoice = 1;
-                }
-            }else{
+            } 
+            else{
                 pcChoice = Math.floor(Math.random()*9)+1;
             }
             return pcChoice;
@@ -99,6 +98,7 @@
             if(input.value > 10 || input.value < 1){
                 error.textContent = "Invalid Input!";
                 error.style.visibility = "visible";
+                roundNum--;
             }else{
                 error.style.visibility = "hidden";
                 myNumber.textContent = myNumberFunc();
